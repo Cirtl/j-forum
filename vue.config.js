@@ -7,6 +7,7 @@ function resolve(dir) {
 }
 
 const name = defaultSettings.title // page title
+const url = defaultSettings.url // service url
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -30,12 +31,12 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/api': {
-          target: 'http://49.234.115.34:8090/',
+      '/user': {
+          target: url,
           changeOrigin: true,
           // ws: true,
           pathRewrite: {
-              '^/api': '/api'
+              '^/user': '/user'
           },
       }
   }
