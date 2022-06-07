@@ -2,6 +2,12 @@
     <div class="form">
         <div class="form-title">注册</div>
         <el-form :model="form" :rules="rules" ref="form" label-position="top" class="form">
+            <el-form-item prop="username">
+                <template v-slot:label>
+                    <label class="line-head">用户名</label>
+                </template>
+                <el-input v-model="form.username"/>
+            </el-form-item>
             <el-form-item prop="email">
                 <template v-slot:label>
                     <label class="line-head">邮箱</label>
@@ -39,7 +45,13 @@ export default {
     name: 'Login',
     data() {
         var chPass = (rule, value, callback) => {
-            this.$refs.form.validateField('password_ch');
+            if (value !== '') {
+                if (this.form.password_ch !== '') {
+                    if (!this.$refs.form) return
+                    this.$refs.form.validateField('password_ch', () => null)
+                }
+                callback()
+            }
         }
         var chPass2 = (rule, value, callback) => {
             if (value !== this.form.password) {
@@ -52,7 +64,8 @@ export default {
             form: {
                 email: '',
                 password: '',
-                password_ch: ''
+                password_ch: '',
+                username: ''
             },
             rules: {
                 email: [
@@ -67,17 +80,26 @@ export default {
                 password_ch: [
                     {required: true, message: '请再次输入密码', trigger: 'blur'},
                     {validator: chPass2, trigger: ['blur', 'change']}
+                ],
+                username: [
+                    {required: true, message: '请输入用户名', trigger: 'blur'}
                 ]
             }
         }
     },
     methods: {
         register() {
+            console.log('register')
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    alert('submit!');
+                    alert('valid')
+                    console.log(this.form)
+                    this.$store.dispatch('user/register', this.form)
+                        .then(() => {
+                            this.$router.push('/auth/sign-in')
+                        })
+                        .catch(() => {})
                 } else {
-                    console.log('error submit!!');
                     return false;
                 }
             });

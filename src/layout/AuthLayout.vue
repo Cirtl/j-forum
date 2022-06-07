@@ -35,9 +35,9 @@ export default {
 }
 .form-box {
   width: 40vw;
-  height: 65vh;
+  height: auto;
   margin-top: 10vh;
-  padding: 50px;
+  padding-top: 20px;
   padding-left: 100px;
   float: right;
   display: block;

@@ -1,47 +1,97 @@
-const state = {
-    name: '',
-    email: '',
-    token: ''
-};
+import { service } from "@/utils/api"
+import { 
+    errorMessage, 
+    successMessage 
+} from "@/utils/message"
+import { 
+    setId,
+    getId,
+    setUserName,
+    getUserName 
+} from "@/utils/auth"
 
-// 修改变量（state不能直接赋值修改，只能通过mutations）
+const getDefaultState = () => { 
+    return {
+        id: getId(),
+        username: getUserName(),
+        email: '',
+        token: ''
+    }
+}
+
+const state = getDefaultState()
+
 const mutations = {
-    // add: (state) => {
-    //     state.num++;
-    // },
-    // // 参数一：state，参数二：新值
-    // addMath: (state, num) => {
-    //     state.num += num;
-    // },
-    // //模拟请求
-    // getData(state, data) {
-    //     state.data = data;
-    // },
-    // getData1(state, data) {
-    //     state.data1 = data;
-    // }
+    RESET_STATE: () => {
+        Object.assign(state, getDefaultState())
+    },
+    SET_ID: (id) => {
+        state.id = id
+    },
+    SET_USER: (username) => {
+        state.username = username
+    },
+    SET_EMAIL: (email) => {
+        state.email = email
+    },
+    SET_TOKEN: (token) => {
+        state.token = token
+    }
 }
 
 const actions = {
-    // // 参数一：自带属性，参数二：新值
-    // addAsyncMath: ({ commit }, num) => {
-    //     setTimeout(() => {
-    //        // 修改addMath的值
-    //         commit('addMath', num);
-    //     }, 1000);
-    // },
-    // request: ({ commit }) => {
-    //     //返回一个promise
-    //     return new Promise((resolve, reject) => {
-    //         //模拟请求
-    //         let httpOption = axios.post;
-    //         httpOption("/api/**/****/*****").then(v => {
-    //             resolve(data);
-    //             //修改getData的值
-    //             commit('getData',data);
-    //         }).catch(err => reject(err));
-    //     })
-    // }
+    login: ({ commit }, userForm) => {
+        const {email, password} = userForm
+        return new Promise((resolve, reject) => {
+            service('/user/login', {
+                email: email,
+                password: password
+            }, 'POST')
+                .then(data => {
+                    if (data.code == 1) {
+                        commit('SET_ID', data.data.id)
+                        setId(data.data.id)
+                        commit('SET_USER', data.data.username)
+                        setUserName(data.data.username)
+                        commit('SET_EMAIL', data.data.email)
+                        successMessage(data.message)
+                        resolve()
+                    } else {
+                        errorMessage(data.message)
+                        reject()
+                    }
+                })
+                .catch(err => {
+                    errorMessage(err.message)
+                    reject()
+                })
+        })
+    },
+    register: ({ commit }, userForm) => {
+        console.log(userForm)
+        const { email, username, password, password_ch } = userForm
+        return new Promise((resolve, reject) => {
+            service('/user/add', {
+                email: email,
+                password: password,
+                username: username
+            }, 'POST')
+                .then(data => {
+                    console.log(data)
+                    if (data.code == 1) {
+                        successMessage('注册成功')
+                        resolve()
+                    } else {
+                        errorMessage(data.message)
+                        reject()
+                    }
+                })
+                .catch(err => {
+                    errorMessage(err.message)
+                    reject()
+                })
+        })
+    }
 };
 
 export default {

@@ -53,9 +53,12 @@ export default {
         login() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    alert('submit!');
+                    this.$store.dispatch('user/login', this.form)
+                        .then(() => {
+                            this.$router.push('/')
+                        })
+                        .catch(() => {})
                 } else {
-                    console.log('error submit!!');
                     return false;
                 }
             });
