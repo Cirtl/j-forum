@@ -17,7 +17,7 @@
 export default {
     methods: {
         toIndex() {
-            this.$router.push('/')
+            this.$router.navigate('/')
         },
         toLogin() {
             this.$router.push('/auth/sign-in')
