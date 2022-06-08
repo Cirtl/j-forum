@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .form {
     padding: 10px;
     width: 450px;

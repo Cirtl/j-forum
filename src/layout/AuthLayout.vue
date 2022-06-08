@@ -30,8 +30,8 @@ export default {
 .form-bg {
     width: 100vw;
     height: 100vh;
-    background-image: url('../assets/watercolor.png');
-    background-size: cover;
+    background-image: url('../assets/bg-3.png');
+    background-size: 100% auto;
 }
 .form-box {
   width: 40vw;

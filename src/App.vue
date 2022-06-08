@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .app-container {
   width: 100vw;
   min-height: 100vh;
