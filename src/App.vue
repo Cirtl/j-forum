@@ -16,7 +16,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   height: auto;
-  display: flex;
+  display: inline;
   flex-direction: column;
   align-content: center;
   justify-content: center;

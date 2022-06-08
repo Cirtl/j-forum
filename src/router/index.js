@@ -6,6 +6,8 @@ import MainLayout from '@/layout/MainLayout.vue'
 import Login from '@/view/auth/Login.vue'
 import Register from '@/view/auth/Register.vue'
 
+import Index from '@/view/main/Index.vue'
+
 const AuthRouteChild = [
     {
         path: '/auth/sign-in',
@@ -17,10 +19,18 @@ const AuthRouteChild = [
     }
 ]
 
+const MainRouteChild = [
+    {
+        path: '/',
+        component: Index
+    },
+]
+
 const routes = [
     {
         path: '/',
         component: MainLayout,
+        children: MainRouteChild
     },
     {
         path: '/auth',

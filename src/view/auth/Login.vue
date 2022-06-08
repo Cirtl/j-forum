@@ -3,13 +3,13 @@
         <div class="form-title">登录</div>
         <el-form :model="form" :rules="rules" ref="form" label-position="top" class="form">
             <el-form-item prop="email">
-                <template v-slot:label>
+                <template #label>
                     <label class="line-head">邮箱</label>
                 </template>
                 <el-input v-model="form.email"/>
             </el-form-item>
             <el-form-item prop="password">
-                <template v-slot:label>
+                <template #label>
                     <label class="line-head">密码</label>
                 </template>
                 <el-input v-model="form.password" show-password/>

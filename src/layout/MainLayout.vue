@@ -1,6 +1,5 @@
 <template>
-  <div class="main-bg"/>
-
+  <el-backtop :right="100" :bottom="100" />
   <div class="main-container">
     <Header class="nav-head" />
 
@@ -19,30 +18,26 @@ export default {
 </script>
 
 <style scoped>
-.main-bg {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
+.main-container {
+  width: 100%;
+  height: auto;
   background-image: url('../assets/bg-1.png');
   background-size: 100% auto;
   background-color: aliceblue;
-  z-index: -1;
-}
-.main-container {
-  width: 100vw;
-  height: auto;
+  background-attachment: fixed;
 }
 .nav-head {
   position: fixed;
   top: 0;
   width: 100%;
   height: 10vh;
+  z-index: 99;
 }
 .main-box {
   width: 70vw;
-  margin-top: 10vh;
+  padding-top: 10vh;
   margin-left: 15vw;
-  min-height: 90vh;
+  min-height: 100vh;
   height: auto;
   display: flex;
   flex-direction: column;
