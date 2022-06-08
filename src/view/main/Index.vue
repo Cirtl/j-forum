@@ -129,11 +129,4 @@ export default {
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.list-title {
-    cursor: pointer;
-}
-.list-title:hover {
-    color: #005097;
-    text-decoration:underline;
-}
 </style>

@@ -35,5 +35,11 @@ export default {
 </script>
 
 <style>
-
+.list-title {
+    cursor: pointer;
+}
+.list-title:hover {
+    color: #005097;
+    text-decoration:underline;
+}
 </style>
