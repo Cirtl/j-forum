@@ -21,6 +21,5 @@ export default {
   align-content: center;
   justify-content: center;
   align-items: center;
-  background-color: aliceblue;
 }
 </style>

@@ -31,6 +31,7 @@ export default {
     width: 100vw;
     height: 100vh;
     background-image: url('../assets/bg-3.png');
+    background-color: aliceblue;
     background-size: 100% auto;
 }
 .form-box {
