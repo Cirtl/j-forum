@@ -70,7 +70,7 @@ import SearchBox from '@/components/SearchBox'
 import TopicIndex from '@/components/TopicIndex'
 import HotTopics from '@/components/HotTopics'
 import { isLogin, getId } from '@/utils/auth'
-import { warnMessage, successMessage } from '@/utils/message'
+import { warnMessage, successMessage, errorMessage } from '@/utils/message'
 export default {
     components: {
         UserOutlined, FireOutlined, FireFilled, EditOutlined,
@@ -110,6 +110,17 @@ export default {
             },
         }
     },
+    watch: {
+        editing: function (val, oldVal) {
+            if (val === false) {
+                this.topic = {
+                    title: '',
+                    content: '',
+                    category: '',
+                }
+            }
+        }
+    },
     methods: {
         fetchTopics(category) {
             this.loading = true
@@ -117,7 +128,15 @@ export default {
                 category: category
             }, 'GET')
                 .then(data => {
-                    this.topics = data.data
+                    if (data.code == 1) {
+                        this.topics = data.data.reverse()
+                        this.loading = false
+                    } else {
+                        error(data.message)
+                    }
+                })
+                .catch(err => {
+                    this.topics = []
                     this.loading = false
                 })
         },
@@ -127,6 +146,9 @@ export default {
             }, 'GET')
                 .then(data => {
                     this.hotTopics = data.data
+                })
+                .catch(err => {
+                    this.hotTopics = []
                 })
         },
         tabChange(TabPanelName) {
@@ -152,8 +174,16 @@ export default {
                         .then(data => {
                             if (data.code == 1) {
                                 successMessage('发帖成功')
+                                if (this.currentCategory == this.topic.category) {
+                                    this.fetchTopics(this.topic.category)
+                                }
                                 this.editing = false
+                            } else {
+                                errorMessage(data.message)
                             }
+                        })
+                        .catch(err => {
+                            errorMessage(err.message)
                         })
                 } else {
                     return false

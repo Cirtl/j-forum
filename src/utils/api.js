@@ -1,4 +1,5 @@
 import axios from "axios"
+import { errorMessage } from "@/utils/message"
 
 export function service(url = '', data = {}, type = 'POST') {
     return new Promise((resolve, reject) => {
@@ -34,6 +35,9 @@ export function service(url = '', data = {}, type = 'POST') {
         }
         promise
             .then(res => resolve(res.data))
-            .catch(err => reject(err))
+            .catch(err => {
+                errorMessage(err.message)
+                reject(err)
+            })
     })
 }

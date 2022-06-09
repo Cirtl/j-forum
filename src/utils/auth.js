@@ -23,10 +23,16 @@ const isLogin = () => {
     return getId() !== null && getId() !== '' && getId() !== undefined
 }
 
+const logout = () => {
+    Cookies.remove(id_key)
+    Cookies.remove(username_key)
+}
+
 export {
     setId,
     getId,
     setUserName,
     getUserName,
-    isLogin
+    isLogin,
+    logout
 }

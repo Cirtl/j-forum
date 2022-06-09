@@ -7,7 +7,8 @@ import {
     setId,
     getId,
     setUserName,
-    getUserName 
+    getUserName,
+    logout
 } from "@/utils/auth"
 
 const getDefaultState = () => { 
@@ -68,7 +69,6 @@ const actions = {
         })
     },
     register: ({ commit }, userForm) => {
-        console.log(userForm)
         const { email, username, password, password_ch } = userForm
         return new Promise((resolve, reject) => {
             service('/user/add', {
@@ -91,6 +91,10 @@ const actions = {
                     reject()
                 })
         })
+    },
+    logout : ({ commit }) => {
+        commit('RESET_STATE')
+        logout()
     }
 };
 
