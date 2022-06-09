@@ -32,12 +32,25 @@ module.exports = {
     },
     proxy: {
       '/user': {
-          target: url,
-          changeOrigin: true,
-          // ws: true,
-          pathRewrite: {
-              '^/user': '/user'
-          },
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+            '^/user': '/user'
+        },
+      },
+      '/topic': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/topic': '/topic'
+        }
+      },
+      '/comment': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/comment': '/comment'
+        }
       }
   }
   },
