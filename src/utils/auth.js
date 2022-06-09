@@ -19,9 +19,14 @@ const getUserName = () => {
     return Cookies.get(username_key)
 }
 
+const isLogin = () => {
+    return getId() !== null && getId() !== '' && getId() !== undefined
+}
+
 export {
     setId,
     getId,
     setUserName,
-    getUserName
+    getUserName,
+    isLogin
 }
