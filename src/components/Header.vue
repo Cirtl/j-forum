@@ -11,11 +11,8 @@
                 </a-avatar>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>
+                        <el-dropdown-item @click="infoshow=true">
                             个人信息
-                        </el-dropdown-item>
-                        <el-dropdown-item>
-                            消息
                         </el-dropdown-item>
                         <el-dropdown-item :divided="true" @click="logout()">
                             <span style="color: red">退出登录</span>
@@ -33,7 +30,15 @@
             </a-button>
         </div>
 
-        <!-- <el-dialog ></el-dialog> -->
+        <el-dialog v-model="infoshow">
+            <el-descriptions
+                title="个人信息"
+                :column="1"
+                size="large">
+                <el-descriptions-item label="Username">{{username}}</el-descriptions-item>
+                <el-descriptions-item label="Email">{{email}}</el-descriptions-item>
+            </el-descriptions>
+        </el-dialog>
     </div>
 </template>
 
@@ -50,11 +55,15 @@ export default {
     computed: {
         username() {
             return this.$store.state.user.username
+        },
+        email() {
+            return this.$store.state.user.email
         }
     },
     data() {
         return {
             logined: false,
+            infoshow: false,
         }
     },
     methods: {
