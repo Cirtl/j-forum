@@ -2,25 +2,7 @@
     <SearchBox/>
     <el-row :gutter="10" class="menu-box" >
         <el-col :span="16">
-            <el-tabs 
-                type="border-card"
-                v-model="currentCategory"
-                @tab-change="tabChange">
-                <el-tab-pane v-loading="loading" v-for="(item, index) in allCategories" :key="index" :name="item" :label="item" :lazy="true">
-                    <TopicItem
-                        v-for="topic in topics"
-                        :key="topic.id"
-                        :topic-id="topic.id"
-                        :title="topic.title"
-                        :content="topic.content"
-                        :comment-count="topic.comment_count"
-                        :browse-count="topic.browse_count"
-                        :user-id="topic.topic_user_id"
-                        :username="topic.topic_user.username"
-                        :email="topic.topic_user.email"
-                        :time="topic.topic_time"/>
-                </el-tab-pane>
-            </el-tabs>
+            <router-view />
         </el-col>
         <el-col :span="8">
             <a-affix :offset-top="70">
@@ -82,7 +64,7 @@ export default {
         HotTopics
     },
     mounted() {
-        this.fetchTopics(this.currentCategory)
+        // this.fetchTopics(this.currentCategory)
         this.fetchHotTopics(10)
     },
     data() {
@@ -125,24 +107,6 @@ export default {
         }
     },
     methods: {
-        fetchTopics(category) {
-            this.loading = true
-            this.$service('/topic/getByCategory', {
-                category: category
-            }, 'GET')
-                .then(data => {
-                    if (data.code == 1) {
-                        this.topics = data.data.reverse()
-                        this.loading = false
-                    } else {
-                        error(data.message)
-                    }
-                })
-                .catch(err => {
-                    this.topics = []
-                    this.loading = false
-                })
-        },
         fetchHotTopics(num) {
             this.$service('/topic/getTopBrowsed', {
                 num: num

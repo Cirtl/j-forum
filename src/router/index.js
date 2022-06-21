@@ -7,6 +7,33 @@ import Login from '@/view/auth/Login.vue'
 import Register from '@/view/auth/Register.vue'
 
 import Index from '@/view/main/Index.vue'
+import TopicBody from '@/view/main/TopicBody.vue'
+
+import Default from '@/view/main/Default.vue'
+import Searching from '@/view/main/Searching.vue'
+
+const MainRouteChild = [
+    {
+        path: '/',
+        component: Index,
+        alias: '/home',
+        children: [
+            {
+                path: '/',
+                component: Default,
+                alias: 'home',
+            },
+            {
+                path: '/search',
+                component: Searching
+            }
+        ]
+    },
+    {
+        path: '/post',
+        component: TopicBody
+    }
+]
 
 const AuthRouteChild = [
     {
@@ -17,13 +44,6 @@ const AuthRouteChild = [
         path: '/auth/sign-for',
         component: Register
     }
-]
-
-const MainRouteChild = [
-    {
-        path: '/',
-        component: Index
-    },
 ]
 
 const routes = [

@@ -27,11 +27,36 @@
 </template>
 
 <script>
+import { warnMessage } from '@/utils/message'
 export default {
     data() {
         return {
             searchText: '',
             searchType: 'title'
+        }
+    },
+    watch: {
+        $route: {
+            handler(val){
+                if (val.path !== '/search') {
+                    this.searchText = ''
+                }
+            },
+            deep: true
+        }
+    },
+    methods: {
+        search() {
+            if (this.searchText === '') {
+                warnMessage('请输入搜索内容')
+                return
+            }
+            this.$router.push({
+                path: '/search',
+                query: {
+                    title: this.searchText
+                }
+            })
         }
     }
 }
