@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 const id_key = 'id'
 const username_key = 'username'
 const email_key = 'email'
+const avatar_key = 'avatar'
 
 const setId = (id) => {
     Cookies.set(id_key, id)
@@ -20,12 +21,20 @@ const getUserName = () => {
     return Cookies.get(username_key)
 }
 
+const setEmail = (email) => {
+    Cookies.set(email_key, email)
+}
+
 const getEmail = () => {
     return Cookies.get(email_key)
 }
 
-const setEmail = (email) => {
-    Cookies.set(email_key, email)
+const setAvatar = (avatar) => {
+    Cookies.set(avatar_key, avatar)
+}
+
+const getAvatar = () => {
+    return Cookies.get(avatar_key)
 }
 
 const isLogin = () => {
@@ -35,6 +44,7 @@ const isLogin = () => {
 const logout = () => {
     Cookies.remove(id_key)
     Cookies.remove(username_key)
+    Cookies.remove(email_key)
 }
 
 export {
@@ -44,6 +54,8 @@ export {
     getUserName,
     setEmail,
     getEmail,
+    setAvatar,
+    getAvatar,
     isLogin,
     logout
 }

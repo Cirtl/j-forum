@@ -4,11 +4,19 @@
 
         <div class="user-box">
             <el-dropdown v-if="logined">
-                <a-avatar style="margin:10px auto" :size="50">
-                    <template #icon>
-                        <UserOutlined />
-                    </template>
-                </a-avatar>
+                <!-- <a-avatar :size="50">
+                    
+                </a-avatar> -->
+                <el-avatar
+                    style="margin:10px auto"
+                    :src="avatar"
+                    :size="50"
+                    shape="circle">
+                    <img
+                        alt="图片加载失败"
+                        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                    />
+                </el-avatar>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item @click="infoshow=true">
@@ -35,8 +43,25 @@
                 title="个人信息"
                 :column="1"
                 size="large">
-                <el-descriptions-item label="Username">{{username}}</el-descriptions-item>
-                <el-descriptions-item label="Email">{{email}}</el-descriptions-item>
+                <el-descriptions-item>
+                    <el-upload
+                        action="/user/changeAvatar"
+                        :show-file-list="false"
+                        :data="{id: id}"
+                        :on-success="handleAvatarSuccess">
+                        <el-avatar
+                            :src="avatar"
+                            size="large"
+                            shape="circle">
+                            <img
+                                alt="图片加载失败"
+                                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                            />
+                        </el-avatar>
+                    </el-upload>
+                </el-descriptions-item>
+                <el-descriptions-item label="用户名">{{username}}</el-descriptions-item>
+                <el-descriptions-item label="邮箱">{{email}}</el-descriptions-item>
             </el-descriptions>
         </el-dialog>
     </div>
@@ -53,17 +78,23 @@ export default {
         this.logined = isLogin()
     },
     computed: {
+        id() {
+            return this.$store.state.user.id
+        },
         username() {
             return this.$store.state.user.username
         },
         email() {
             return this.$store.state.user.email
+        },
+        avatar() {
+            return this.$store.state.user.avatar
         }
     },
     data() {
         return {
             logined: false,
-            infoshow: false,
+            infoshow: false
         }
     },
     methods: {
@@ -76,6 +107,10 @@ export default {
         logout() {
             this.$store.dispatch('user/logout')
             this.logined = false
+        },
+        handleAvatarSuccess(response, uploadFile) {
+            console.log(response)
+            this.$store.dispatch('user/changeAvatar', response.data)
         }
     }
 }

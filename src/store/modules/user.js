@@ -10,6 +10,8 @@ import {
     getUserName,
     setEmail,
     getEmail,
+    setAvatar,
+    getAvatar,
     logout
 } from "@/utils/auth"
 
@@ -18,6 +20,7 @@ const getDefaultState = () => {
         id: getId(),
         username: getUserName(),
         email: getEmail(),
+        avatar: getAvatar(),
         token: ''
     }
 }
@@ -36,6 +39,9 @@ const mutations = {
     },
     SET_EMAIL: (state, email) => {
         state.email = email
+    },
+    SET_AVATAR: (state, avatar) => {
+        state.avatar = avatar
     },
     SET_TOKEN: (state, token) => {
         state.token = token
@@ -58,6 +64,8 @@ const actions = {
                         setUserName(data.data.username)
                         commit('SET_EMAIL', data.data.email)
                         setEmail(data.data.email)
+                        commit('SET_AVATAR', data.data.avatar)
+                        setAvatar(data.data.avatar)
                         successMessage(data.message)
                         resolve()
                     } else {
@@ -98,6 +106,10 @@ const actions = {
     logout : ({ commit }) => {
         commit('RESET_STATE')
         logout()
+    },
+    changeAvatar: ({ commit }, avatar) => {
+        commit('SET_AVATAR', avatar)
+        setAvatar(avatar)
     }
 };
 
