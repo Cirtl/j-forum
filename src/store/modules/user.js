@@ -8,6 +8,8 @@ import {
     getId,
     setUserName,
     getUserName,
+    setEmail,
+    getEmail,
     logout
 } from "@/utils/auth"
 
@@ -15,7 +17,7 @@ const getDefaultState = () => {
     return {
         id: getId(),
         username: getUserName(),
-        email: '',
+        email: getEmail(),
         token: ''
     }
 }
@@ -23,19 +25,19 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const mutations = {
-    RESET_STATE: () => {
+    RESET_STATE: (state) => {
         Object.assign(state, getDefaultState())
     },
-    SET_ID: (id) => {
+    SET_ID: (state, id) => {
         state.id = id
     },
-    SET_USER: (username) => {
+    SET_USER: (state, username) => {
         state.username = username
     },
-    SET_EMAIL: (email) => {
+    SET_EMAIL: (state, email) => {
         state.email = email
     },
-    SET_TOKEN: (token) => {
+    SET_TOKEN: (state, token) => {
         state.token = token
     }
 }
@@ -55,6 +57,7 @@ const actions = {
                         commit('SET_USER', data.data.username)
                         setUserName(data.data.username)
                         commit('SET_EMAIL', data.data.email)
+                        setEmail(data.data.email)
                         successMessage(data.message)
                         resolve()
                     } else {

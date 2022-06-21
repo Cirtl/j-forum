@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const id_key = 'id'
 const username_key = 'username'
+const email_key = 'email'
 
 const setId = (id) => {
     Cookies.set(id_key, id)
@@ -19,6 +20,14 @@ const getUserName = () => {
     return Cookies.get(username_key)
 }
 
+const getEmail = () => {
+    return Cookies.get(email_key)
+}
+
+const setEmail = (email) => {
+    Cookies.set(email_key, email)
+}
+
 const isLogin = () => {
     return getId() !== null && getId() !== '' && getId() !== undefined
 }
@@ -33,6 +42,8 @@ export {
     getId,
     setUserName,
     getUserName,
+    setEmail,
+    getEmail,
     isLogin,
     logout
 }
