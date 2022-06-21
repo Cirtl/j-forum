@@ -1,41 +1,48 @@
 <template>
     <div class="topic-box">
         <a-badge :count="commentCount" status="default" title="回复数">
-            <div class="topic-title" @click="lookIt()">
-                {{title}}
-            </div>
+            <TitleLink
+                class="topic-title"
+                :title="title" 
+                :topic-id="topicId"/>
         </a-badge>
         <div class="topic-content">
             {{content}}
         </div>
         <div class="topic-owner">
             <UserOutlined />
-            <label>{{username}}</label>
+            <UserName style="margin-right: 20px; display: inline" :username="username" :email="email" />
+            <label style="margin-right: 20px">浏览量: {{browseCount}}</label>
+            <label style="float:right">{{time}}</label>
         </div>
     </div>
 </template>
 
 <script>
 import { UserOutlined } from '@ant-design/icons-vue'
+import TitleLink from '@/components/topic/TitleLink'
+import UserName from '@/components/UserName'
 export default {
-    components: { UserOutlined },
+    components: {
+        UserOutlined,
+        TitleLink,
+        UserName
+    },
     props: {
         topicId: Number,
         title: String,
         content: String,
         commentCount: Number,
+        browseCount: Number,
         userId: Number,
-        username: String
-    },
-    methods: {
-        lookIt() {
-            
-        }
+        username: String,
+        email: String,
+        time: String
     }
 }
 </script>
 
-<style>
+<style scoped>
 .topic-box {
     margin-top: 15px;
     padding-bottom: 10px;
