@@ -96,7 +96,7 @@ export default {
         }
     },
     watch: {
-        editing: function (val, oldVal) {
+        editing: function (val) {
             if (val === false) {
                 this.topic = {
                     title: '',
