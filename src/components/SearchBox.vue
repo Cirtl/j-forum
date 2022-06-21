@@ -20,7 +20,6 @@
             <template #addonBefore>
                 <a-select v-model:value="searchType" style="width: 100px">
                     <a-select-option value="title">话题</a-select-option>
-                    <a-select-option value="id">用户名</a-select-option>
                 </a-select>
             </template>
         </a-input-search>

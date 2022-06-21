@@ -7,15 +7,18 @@
                 v-model="currentCategory"
                 @tab-change="tabChange">
                 <el-tab-pane v-loading="loading" v-for="(item, index) in allCategories" :key="index" :name="item" :label="item" :lazy="true">
-                    <TopicIndex
+                    <TopicItem
                         v-for="topic in topics"
                         :key="topic.id"
                         :topic-id="topic.id"
                         :title="topic.title"
                         :content="topic.content"
                         :comment-count="topic.comment_count"
+                        :browse-count="topic.browse_count"
                         :user-id="topic.topic_user_id"
-                        :username="topic.topic_user.username"/>
+                        :username="topic.topic_user.username"
+                        :email="topic.topic_user.email"
+                        :time="topic.topic_time"/>
                 </el-tab-pane>
             </el-tabs>
         </el-col>
@@ -67,7 +70,7 @@
 <script>
 import { UserOutlined, FireOutlined, FireFilled, EditOutlined } from '@ant-design/icons-vue'
 import SearchBox from '@/components/SearchBox'
-import TopicIndex from '@/components/TopicIndex'
+import TopicItem from '@/components/topic/TopicItem'
 import HotTopics from '@/components/HotTopics'
 import { isLogin, getId } from '@/utils/auth'
 import { warnMessage, successMessage, errorMessage } from '@/utils/message'
@@ -75,7 +78,7 @@ export default {
     components: {
         UserOutlined, FireOutlined, FireFilled, EditOutlined,
         SearchBox,
-        TopicIndex,
+        TopicItem,
         HotTopics
     },
     mounted() {

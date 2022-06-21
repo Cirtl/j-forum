@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         toIndex() {
-            this.$router.navigate('/')
+            this.$router.push('/')
         },
         toLogin() {
             this.$router.push('/auth/sign-in')

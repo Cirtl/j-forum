@@ -8,9 +8,10 @@
                 <a-list-item>
                     <a-list-item-meta>
                         <template #title>
-                            <div class="list-title">
-                                {{ (index+1) + '. ' + item.title }}
-                            </div>
+                            <TitleLink
+                                class="list-title"
+                                :title="(index+1)+'. '+item.title"
+                                :topic-id="item.id"/>
                         </template>
                     </a-list-item-meta>
                     <template #actions>
@@ -24,9 +25,11 @@
 
 <script>
 import { FireOutlined } from '@ant-design/icons-vue'
+import TitleLink from '@/components/topic/TitleLink'
 export default {
     components: {
-        FireOutlined
+        FireOutlined,
+        TitleLink
     },
     props: {
         topics: Array
