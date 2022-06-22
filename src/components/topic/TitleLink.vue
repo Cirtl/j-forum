@@ -16,8 +16,7 @@ export default {
                     id: this.$props.topicId,
                 }
             })
-            // window.open(href, '_blank')
-            window.open(href, '_self')
+            window.open(href, '_blank')
         }
     }
 }
