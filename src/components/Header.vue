@@ -4,9 +4,6 @@
 
         <div class="user-box">
             <el-dropdown v-if="logined">
-                <!-- <a-avatar :size="50">
-                    
-                </a-avatar> -->
                 <el-avatar
                     style="margin:10px auto"
                     :src="avatar"
@@ -14,8 +11,7 @@
                     shape="circle">
                     <img
                         alt="图片加载失败"
-                        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-                    />
+                        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
                 </el-avatar>
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -46,8 +42,10 @@
                 <el-descriptions-item>
                     <el-upload
                         action="/user/changeAvatar"
+                        accept="image/*"
                         :show-file-list="false"
                         :data="{id: id}"
+                        :beforeUpload="beforeUpload"
                         :on-success="handleAvatarSuccess">
                         <el-avatar
                             :src="avatar"
@@ -55,8 +53,7 @@
                             shape="circle">
                             <img
                                 alt="图片加载失败"
-                                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-                            />
+                                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
                         </el-avatar>
                     </el-upload>
                 </el-descriptions-item>
@@ -70,6 +67,7 @@
 <script>
 import { UserOutlined } from '@ant-design/icons-vue'
 import { isLogin } from '@/utils/auth'
+import { warnMessage } from '@/utils/message'
 export default {
     components: {
         UserOutlined
@@ -111,6 +109,14 @@ export default {
         handleAvatarSuccess(response, uploadFile) {
             console.log(response)
             this.$store.dispatch('user/changeAvatar', response.data)
+        },
+        beforeUpload (file) {
+            if (file.type.match(/image/) == null) {
+                warnMessage('只能上传图片')
+                return false
+            } else {
+                return true
+            }
         }
     }
 }

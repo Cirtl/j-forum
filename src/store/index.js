@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import user from './modules/user'
+import inform from './modules/inform'
 
 const getters = {
     token: state => state.user.token
@@ -7,7 +8,8 @@ const getters = {
 
 const store = createStore({
 	modules: {
-		user
+		user,
+		inform
 	},
 	getters
 })

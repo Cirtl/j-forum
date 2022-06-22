@@ -30,16 +30,24 @@ export default {
         this.fetchTopics(this.currentCategory)
     },
     data() {
+        const defaultSettings = require('@/settings.js')
         return {
             loading: true,
-            allCategories: [
-                '知识',
-                '资讯',
-                '生活',
-                '娱乐'
-            ],
+            allCategories: defaultSettings.allCategories,
             currentCategory: '知识',
             topics: []
+        }
+    },
+    computed: {
+        category () {
+            return this.$store.state.inform.changedCategory
+        }
+    },
+    watch: {
+        category (val, oldval) {
+            if (val === this.currentCategory) {
+                this.fetchTopics(val)
+            }
         }
     },
     methods: {

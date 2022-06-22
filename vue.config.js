@@ -51,6 +51,13 @@ module.exports = {
         pathRewrite: {
           '^/comment': '/comment'
         }
+      },
+      '/upload': {
+        target: url,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/upload': '/upload'
+        }
       }
   }
   },

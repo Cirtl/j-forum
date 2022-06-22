@@ -35,6 +35,20 @@
                 type="textarea"/>
             </el-form-item>
             <el-form-item>
+                <el-upload
+                    :file-list="fileList"
+                    accept="image/*"
+                    action="/upload/images"
+                    list-type="picture-card"
+                    :beforeUpload="beforeUpload"
+                    :onSuccess="uploadSuccess"
+                    @preview="handlePreview">
+                    <div v-if="fileList.length < 6">
+                        <PlusOutlined />
+                    </div>
+                </el-upload>
+            </el-form-item>
+            <el-form-item>
                 <el-row style="width: 100%">
                     <el-col :span="2"/>
                     <el-col :span="6">
@@ -47,37 +61,34 @@
             </el-form-item>
         </el-form>
     </el-dialog>
+    <el-dialog v-model="preview">
+        <el-image fit="contain" :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
+
 </template>
 
 <script>
-import { UserOutlined, FireOutlined, FireFilled, EditOutlined } from '@ant-design/icons-vue'
+import { UserOutlined, FireOutlined, FireFilled, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import SearchBox from '@/components/SearchBox'
 import TopicItem from '@/components/topic/TopicItem'
 import HotTopics from '@/components/HotTopics'
 import { isLogin, getId } from '@/utils/auth'
 import { warnMessage, successMessage, errorMessage } from '@/utils/message'
+import { appendImages } from '@/utils/image'
 export default {
     components: {
-        UserOutlined, FireOutlined, FireFilled, EditOutlined,
+        UserOutlined, FireOutlined, FireFilled, EditOutlined, PlusOutlined,
         SearchBox,
         TopicItem,
         HotTopics
     },
     mounted() {
-        // this.fetchTopics(this.currentCategory)
         this.fetchHotTopics(10)
     },
     data() {
+        const defaultSettings = require('@/settings.js')
         return {
-            loading: true,
-            allCategories: [
-                '知识',
-                '资讯',
-                '生活',
-                '娱乐'
-            ],
-            currentCategory: '知识',
-            topics: [],
+            allCategories: defaultSettings.allCategories,
             hotTopics: [],
             editing: false,
             topic: {
@@ -85,6 +96,7 @@ export default {
                 content: '',
                 category: '',
             },
+            raw_content: '',
             topic_rules: {
                 title: [
                     {required: true, message: '请决定一个标题', trigger: 'blur'}
@@ -93,6 +105,9 @@ export default {
                     {required: true, message: '请选择一个分区', trigger: 'blur'}
                 ]
             },
+            fileList: [],
+            preview: false,
+            dialogImageUrl: ''
         }
     },
     watch: {
@@ -103,6 +118,8 @@ export default {
                     content: '',
                     category: '',
                 }
+                console.log(this.fileList)
+                this.fileList = []
             }
         }
     },
@@ -132,18 +149,19 @@ export default {
         onSubmit() {
             this.$refs.topicAdd.validate((valid) => {
                 if (valid) {
+                    this.handleImages()
+                    console.log(this.topic)
                     this.$service('/topic/add', {
                         title: this.topic.title,
-                        content: this.topic.content,
+                        content: this.raw_content,
                         topic_user_id: getId(),
                         topic_category: this.topic.category
                     }, 'POST')
                         .then(data => {
+                            console.log(data)
                             if (data.code == 1) {
                                 successMessage('发帖成功')
-                                if (this.currentCategory == this.topic.category) {
-                                    this.fetchTopics(this.topic.category)
-                                }
+                                this.$store.dispatch('inform/addedCategory', this.topic.category)
                                 this.editing = false
                             } else {
                                 errorMessage(data.message)
@@ -156,6 +174,28 @@ export default {
                     return false
                 }
             })
+        },
+        handlePreview (file) {
+            this.preview = true
+            this.dialogImageUrl = file.url
+        },
+        beforeUpload (file) {
+            if (file.type.match(/image/) == null) {
+                warnMessage('只能上传图片')
+                return false
+            } else {
+                return true
+            }
+        },
+        uploadSuccess (response, uploadFile, uploadFiles) {
+            uploadFiles.pop()
+            uploadFiles.push({url: response.data})
+        },
+        handleImages () {
+            if (this.fileList.length == 0)
+                return
+            
+            this.raw_content = appendImages(this.topic.content, this.fileList)
         }
     }
 }

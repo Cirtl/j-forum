@@ -21,10 +21,14 @@
                 </el-col>
             </el-row>
             <div class="topic-content">
-                {{topic.content}}
+                {{real_content}}
             </div>
-            <div class="topic-imgs">
-
+            <div v-if="links.length > 0" class="topic-imgs">
+                <el-carousel :interval="5000" arrow="always">
+                    <el-carousel-item v-for="link in links" :key="link">
+                        <a-image fit="contain" :src="link"/>
+                    </el-carousel-item>
+                </el-carousel>
             </div>
             <div class="topic-options">
                 <div>
@@ -50,6 +54,18 @@
                 <a-collapse-panel header="发布评论">
                     <div class="input-area" ref="area">
                         <el-input v-model="comment" :autosize="{ minRows: 4 }" type="textarea" />
+                        <el-upload
+                            :file-list="fileList"
+                            accept="image/*"
+                            action="/upload/images"
+                            list-type="picture-card"
+                            :beforeUpload="beforeUpload"
+                            :onSuccess="uploadSuccess"
+                            @preview="handlePreview">
+                            <div v-if="fileList.length < 6">
+                                <PlusOutlined />
+                            </div>
+                        </el-upload>
                         <div style="width: 100%; padding-top: 5px">
                             <a-button type="primary" @click="submit()">发布</a-button>
                         </div>
@@ -61,14 +77,15 @@
 </template>
 
 <script>
-import { UserOutlined } from '@ant-design/icons-vue'
+import { UserOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import CommentItem from '@/components/comment/CommentItem'
 import UserName from '@/components/UserName'
 import { getId, isLogin } from '@/utils/auth'
 import { warnMessage, successMessage, errorMessage } from '@/utils/message'
+import { appendImages, extractImages } from '@/utils/image'
 export default {
     components: {
-        UserOutlined,
+        UserOutlined, PlusOutlined,
         CommentItem,
         UserName
     },
@@ -102,8 +119,11 @@ export default {
                 thumbs_up: 0,
                 topic_time: ""
             },
+            real_content: '',
+            links: [],
             comments: [],
-            comment: ''
+            comment: '',
+            fileList: []
         }
     },
     methods: {
@@ -114,6 +134,9 @@ export default {
                 .then(data => {
                     console.log(data)
                     this.topic = data.data
+                    const {real_content, links } = extractImages(this.topic.content)
+                    this.real_content = real_content
+                    this.links = links
                 })
         },
         fetchComments() {
@@ -133,11 +156,12 @@ export default {
                 warnMessage("登录后再来评论吧")
                 return
             }
-            if (this.comment === '') {
+            let raw_content = appendImages(this.comment, this.fileList)
+            if (raw_content === '') {
                 warnMessage('请输入内容')
             } else{
                 this.$service('/comment/add', {
-                    content: this.comment,
+                    content: raw_content,
                     comment_user_id: getId(),
                     comment_topic_id: this.$route.query.id
                 }, 'POST')
@@ -145,13 +169,30 @@ export default {
                         if (data.code === 1) {
                             successMessage('评论成功')
                             this.comment = ''
+                            this.fileList = []
                             this.fetchComments()
                         } else {
                             errorMessage(data.message)
                         }
                     })
             }
-        }
+        },
+        handlePreview (file) {
+            this.preview = true
+            this.dialogImageUrl = file.url
+        },
+        beforeUpload (file) {
+            if (file.type.match(/image/) == null) {
+                warnMessage('只能上传图片')
+                return false
+            } else {
+                return true
+            }
+        },
+        uploadSuccess (response, uploadFile, uploadFiles) {
+            uploadFiles.pop()
+            uploadFiles.push({url: response.data})
+        },
     }
 }
 </script>

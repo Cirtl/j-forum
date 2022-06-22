@@ -4,7 +4,7 @@
             <el-col :span="2">
                 <div class="owner_img">
                     <UserOutlined v-if="avatar === null" style="font-size: 30px" />
-                    <a-image v-else :src="avatar" style="width: 100%;" />
+                    <el-image v-else :src="avatar" style="width: 100%;" />
                 </div>
             </el-col>
             <el-col :span="18">
@@ -16,7 +16,16 @@
                 </el-row>
                 <el-row>
                     <el-col :span="24">
-                        {{content}}
+                        {{real_content}}
+                    </el-col>
+                </el-row>
+                <el-row v-if="links.length > 0">
+                    <el-col :span="24">
+                        <el-carousel :interval="5000" arrow="always">
+                            <el-carousel-item v-for="link in links" :key="link">
+                                <a-image fit="contain" :src="link"/>
+                            </el-carousel-item>
+                        </el-carousel>
                     </el-col>
                 </el-row>
             </el-col>
@@ -28,6 +37,7 @@
 <script>
 import { UserOutlined } from '@ant-design/icons-vue'
 import UserName from '@/components/UserName'
+import { extractImages } from '@/utils/image'
 export default {
     components: {
         UserOutlined,
@@ -40,6 +50,13 @@ export default {
         commentTime: String,
         content: String,
         floor: Number  
+    },
+    data() {
+        const {real_content, links } = extractImages(this.$props.content)
+        return {
+            real_content: real_content,
+            links: links
+        }
     }
 }
 </script>
@@ -52,7 +69,7 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
 }
 </style>

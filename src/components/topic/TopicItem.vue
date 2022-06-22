@@ -7,7 +7,14 @@
                 :topic-id="topicId"/>
         </a-badge>
         <div class="topic-content">
-            {{content}}
+            {{real_content}}
+        </div>
+        <div v-if="links.length > 0" class="topic-images">
+            <el-carousel :interval="5000" arrow="always">
+                <el-carousel-item v-for="link in links" :key="link">
+                    <a-image fit="contain" :src="link"/>
+                </el-carousel-item>
+            </el-carousel>
         </div>
         <div class="topic-owner">
             <UserOutlined />
@@ -22,6 +29,7 @@
 import { UserOutlined } from '@ant-design/icons-vue'
 import TitleLink from '@/components/topic/TitleLink'
 import UserName from '@/components/UserName'
+import { extractImages } from '@/utils/image'
 export default {
     components: {
         UserOutlined,
@@ -38,6 +46,13 @@ export default {
         username: String,
         email: String,
         time: String
+    },
+    data() {
+        const {real_content, links } = extractImages(this.$props.content)
+        return {
+            real_content: real_content,
+            links: links
+        }
     }
 }
 </script>
