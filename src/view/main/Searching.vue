@@ -55,7 +55,7 @@ export default {
         },
         findTopics() {
             let title = this.$route.query.title
-            this.$service('/topic/getByTitle', {
+            this.$service('/api/topic/getByTitle', {
                 title: title
             }, 'GET')
                 .then(data => {
@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .header {
     display: flex;
     align-items: center;

@@ -52,7 +52,7 @@ const actions = {
     login: ({ commit }, userForm) => {
         const {email, password} = userForm
         return new Promise((resolve, reject) => {
-            service('/user/login', {
+            service('/api/user/login', {
                 email: email,
                 password: password
             }, 'POST')
@@ -82,7 +82,7 @@ const actions = {
     register: ({ commit }, userForm) => {
         const { email, username, password, password_ch } = userForm
         return new Promise((resolve, reject) => {
-            service('/user/add', {
+            service('/api/user/add', {
                 email: email,
                 password: password,
                 username: username

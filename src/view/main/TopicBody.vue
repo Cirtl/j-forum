@@ -57,7 +57,7 @@
                         <el-upload
                             :file-list="fileList"
                             accept="image/*"
-                            action="/upload/images"
+                            action="/api/upload/images"
                             list-type="picture-card"
                             :beforeUpload="beforeUpload"
                             :onSuccess="uploadSuccess"
@@ -90,7 +90,7 @@ export default {
         UserName
     },
     created() {
-        this.$service('/topic/browseUp', {
+        this.$service('/api/topic/browseUp', {
             id: this.$route.query.id
         }, 'GET')
     },
@@ -128,7 +128,7 @@ export default {
     },
     methods: {
         fetchSelf() {
-            this.$service('/topic/getById', {
+            this.$service('/api/topic/getById', {
                 id: this.$route.query.id
             }, 'GET')
                 .then(data => {
@@ -140,7 +140,7 @@ export default {
                 })
         },
         fetchComments() {
-            this.$service('/comment/getByTopicId', {
+            this.$service('/api/comment/getByTopicId', {
                 id: this.$route.query.id
             }, 'GET')
                 .then(data => {
@@ -160,7 +160,7 @@ export default {
             if (raw_content === '') {
                 warnMessage('请输入内容')
             } else{
-                this.$service('/comment/add', {
+                this.$service('/api/comment/add', {
                     content: raw_content,
                     comment_user_id: getId(),
                     comment_topic_id: this.$route.query.id

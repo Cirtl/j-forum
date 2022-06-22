@@ -41,7 +41,7 @@
                 size="large">
                 <el-descriptions-item>
                     <el-upload
-                        action="/user/changeAvatar"
+                        action="/api/user/changeAvatar"
                         accept="image/*"
                         :show-file-list="false"
                         :data="{id: id}"

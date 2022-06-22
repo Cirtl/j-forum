@@ -57,7 +57,7 @@ export default {
         },
         fetchTopics(category) {
             this.loading = true
-            this.$service('/topic/getByCategory', {
+            this.$service('/api/topic/getByCategory', {
                 category: category
             }, 'GET')
                 .then(data => {
@@ -77,6 +77,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

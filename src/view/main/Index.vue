@@ -38,7 +38,7 @@
                 <el-upload
                     :file-list="fileList"
                     accept="image/*"
-                    action="/upload/images"
+                    action="/api/upload/images"
                     list-type="picture-card"
                     :beforeUpload="beforeUpload"
                     :onSuccess="uploadSuccess"
@@ -125,7 +125,7 @@ export default {
     },
     methods: {
         fetchHotTopics(num) {
-            this.$service('/topic/getTopBrowsed', {
+            this.$service('/api/topic/getTopBrowsed', {
                 num: num
             }, 'GET')
                 .then(data => {
@@ -151,7 +151,7 @@ export default {
                 if (valid) {
                     this.handleImages()
                     console.log(this.topic)
-                    this.$service('/topic/add', {
+                    this.$service('/api/topic/add', {
                         title: this.topic.title,
                         content: this.raw_content,
                         topic_user_id: getId(),
