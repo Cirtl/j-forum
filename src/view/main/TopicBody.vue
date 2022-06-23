@@ -14,7 +14,6 @@
                 </el-col>
                 <el-col :span="5">
                     <div>
-                        <!-- <div style="font-size:15px">{{topic.topic_user.username}}</div> -->
                         <UserName style="font-size:15px" :username="topic.topic_user.username" :email="topic.topic_user.email"/>
                         <div style="font-size: 10px; color: gray">{{topic.topic_time}}</div>
                     </div>
@@ -23,7 +22,7 @@
             <div class="topic-content">
                 {{real_content}}
             </div>
-            <div v-if="links.length > 0" class="topic-imgs">
+            <div v-if="links !== []" class="topic-imgs">
                 <el-carousel :interval="5000" arrow="always">
                     <el-carousel-item v-for="link in links" :key="link">
                         <a-image fit="contain" :src="link"/>
@@ -36,10 +35,7 @@
                 </div>
             </div>
         </el-card>
-        <el-card class="comment-container" v-if="comments.length == 0">
-            <el-empty description="发布第一条评论吧"/>
-        </el-card>
-        <el-card class="comment-container" v-else>
+        <el-card class="comment-container" v-if="comments !== null">
             <CommentItem
                 v-for="comment in comments" :key="comment.id"
                 :avatar="comment.comment_user.avatar"
@@ -48,6 +44,9 @@
                 :comment-time="comment.comment_time"
                 :content="comment.content"
                 :floor="comment.floor"/>
+        </el-card>
+        <el-card class="comment-container" v-else>
+            <el-empty description="发布第一条评论吧"/>
         </el-card>
         <a-affix :offset-bottom="15">
             <a-collapse class="input-container">
